@@ -2,9 +2,11 @@ import streamlit as st
 import numpy as np
 import pickle
 
-# Load model
-with open("model.pkl", "rb") as f:
-    model = pickle.load(f)
+# Save model
+with open("model.pkl", "wb") as f:
+    pickle.dump(pipeline, f)
+
+print("✅ model.pkl created successfully")
 
 st.set_page_config(page_title="Bike Rental Prediction", layout="centered")
 
