@@ -64,6 +64,18 @@ input_df = pd.DataFrame([{
     "windspeed": windspeed
 }])
 
+# Force correct data types (CRITICAL FIX)
+int_cols = [
+    "season", "yr", "mnth", "hr",
+    "holiday", "weekday", "workingday", "weathersit"
+]
+
+float_cols = ["temp", "atemp", "hum", "windspeed"]
+
+input_df[int_cols] = input_df[int_cols].astype(int)
+input_df[float_cols] = input_df[float_cols].astype(float)
+
+
 # -------------------------------
 # Prediction
 # -------------------------------
