@@ -39,7 +39,6 @@ hr = st.sidebar.slider("Hour", 0, 23)
 holiday = st.sidebar.selectbox("Holiday", [0, 1])
 workingday = st.sidebar.selectbox("Working Day", [0, 1])
 weathersit = st.sidebar.selectbox("Weather Situation", [1, 2, 3, 4])
-weekday = st.sidebar.selectbox("Weekday (0=Sunday, 6=Saturday)",[0, 1, 2, 3, 4, 5, 6])
 
 temp = st.sidebar.slider("Temperature", 0.0, 1.0)
 atemp = st.sidebar.slider("Feels Like Temp", 0.0, 1.0)
@@ -55,7 +54,6 @@ input_df = pd.DataFrame([{
     "mnth": mnth,
     "hr": hr,
     "holiday": holiday,
-    "weekday": weekday,
     "workingday": workingday,
     "weathersit": weathersit,
     "temp": temp,
@@ -64,40 +62,19 @@ input_df = pd.DataFrame([{
     "windspeed": windspeed
 }])
 
-# Force correct data types (CRITICAL FIX)
-int_cols = [
-    "season", "yr", "mnth", "hr",
-    "holiday", "weekday", "workingday", "weathersit"
-]
-
-float_cols = ["temp", "atemp", "hum", "windspeed"]
-
-input_df[int_cols] = input_df[int_cols].astype(int)
-input_df[float_cols] = input_df[float_cols].astype(float)
-
-
 # -------------------------------
 # Prediction
 # -------------------------------
 if st.sidebar.button("🚀 Predict Demand"):
+    prediction = model.predict(input_df)[0]
 
-    # ---- FORCE numeric conversion (critical fix) ----
-    input_df_numeric = input_df.copy()
-
-    input_df_numeric = input_df_numeric.apply(
-        pd.to_numeric, errors="coerce"
-    )
-
-    # Safety: replace any NaN created during coercion
-    input_df_numeric = input_df_numeric.fillna(0)
-
-    try:
-        prediction = model.predict(input_df_numeric)[0]
-        st.success(f"🚴 Predicted Bike Rentals: {int(prediction)}")
-    except Exception as e:
-        st.error("Prediction failed due to preprocessing mismatch")
-        st.exception(e)
-
+    # Demand Category
+    if prediction < 100:
+        demand_level = "Low"
+    elif prediction < 300:
+        demand_level = "Medium"
+    else:
+        demand_level = "High"
 
     # -------------------------------
     # KPI Cards
