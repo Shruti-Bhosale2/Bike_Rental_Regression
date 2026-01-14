@@ -112,19 +112,6 @@ if prediction is not None:
     col2.metric("📊 Demand Level", demand_level)
     col3.metric("⏰ Hour", int(input_df["hr"][0]))
 
-
-        # ----- KPI Cards -----
-        col1, col2, col3 = st.columns(3)
-        col1.metric("🚴 Predicted Rentals", int(prediction))
-        col2.metric("📊 Demand Level", demand_level)
-        col3.metric("⏰ Selected Hour", int(input_df_numeric["hr"][0]))
-
-        st.success("✅ Prediction generated successfully")
-
-    except Exception as e:
-        st.error("Prediction failed")
-        st.exception(e)
-
     # -------------------------------
     # KPI Cards
     # -------------------------------
