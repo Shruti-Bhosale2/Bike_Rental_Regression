@@ -82,18 +82,36 @@ prediction = None
 
 if st.sidebar.button("🚀 Predict Demand"):
 
-    input_df_numeric = input_df.apply(pd.to_numeric, errors="coerce").fillna(0)
+    input_df_numeric = input_df.apply(
+        pd.to_numeric, errors="coerce"
+    ).fillna(0)
 
     try:
         prediction = model.predict(input_df_numeric)[0]
 
-        # ----- Demand Category -----
+        # Demand category
         if prediction < 100:
             demand_level = "Low"
         elif prediction < 300:
             demand_level = "Medium"
         else:
             demand_level = "High"
+
+    except Exception as e:
+        st.error("Prediction failed")
+        st.exception(e)
+
+# -------------------------------
+# DISPLAY RESULTS (ONLY IF EXISTS)
+# -------------------------------
+if prediction is not None:
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("🚴 Predicted Rentals", int(round(prediction)))
+    col2.metric("📊 Demand Level", demand_level)
+    col3.metric("⏰ Hour", int(input_df["hr"][0]))
+
 
         # ----- KPI Cards -----
         col1, col2, col3 = st.columns(3)
