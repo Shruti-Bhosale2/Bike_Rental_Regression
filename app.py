@@ -65,6 +65,16 @@ input_df = pd.DataFrame([{
     "windspeed": windspeed
 }])
 
+required_cols = model.feature_names_in_
+
+missing = set(required_cols) - set(input_df_numeric.columns)
+
+if missing:
+    st.error(f"Missing columns: {missing}")
+else:
+    prediction = model.predict(input_df_numeric)[0]
+
+
 # -------------------------------
 # Initialize Prediction Variable
 # -------------------------------
