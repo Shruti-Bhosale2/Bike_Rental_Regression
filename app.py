@@ -80,12 +80,24 @@ input_df[float_cols] = input_df[float_cols].astype(float)
 # Prediction
 # -------------------------------
 if st.sidebar.button("🚀 Predict Demand"):
+
+    # ---- FORCE numeric conversion (critical fix) ----
+    input_df_numeric = input_df.copy()
+
+    input_df_numeric = input_df_numeric.apply(
+        pd.to_numeric, errors="coerce"
+    )
+
+    # Safety: replace any NaN created during coercion
+    input_df_numeric = input_df_numeric.fillna(0)
+
     try:
-        prediction = model.predict(input_df)[0]
+        prediction = model.predict(input_df_numeric)[0]
         st.success(f"🚴 Predicted Bike Rentals: {int(prediction)}")
     except Exception as e:
-        st.error("Prediction failed due to input mismatch")
+        st.error("Prediction failed due to preprocessing mismatch")
         st.exception(e)
+
 
     # -------------------------------
     # KPI Cards
