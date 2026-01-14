@@ -39,6 +39,7 @@ hr = st.sidebar.slider("Hour", 0, 23)
 holiday = st.sidebar.selectbox("Holiday", [0, 1])
 workingday = st.sidebar.selectbox("Working Day", [0, 1])
 weathersit = st.sidebar.selectbox("Weather Situation", [1, 2, 3, 4])
+weekday = st.sidebar.selectbox("Weekday (0=Sunday, 6=Saturday)",[0, 1, 2, 3, 4, 5, 6])
 
 temp = st.sidebar.slider("Temperature", 0.0, 1.0)
 atemp = st.sidebar.slider("Feels Like Temp", 0.0, 1.0)
@@ -54,6 +55,7 @@ input_df = pd.DataFrame([{
     "mnth": mnth,
     "hr": hr,
     "holiday": holiday,
+    "weekday": weekday,
     "workingday": workingday,
     "weathersit": weathersit,
     "temp": temp,
