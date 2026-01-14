@@ -80,15 +80,12 @@ input_df[float_cols] = input_df[float_cols].astype(float)
 # Prediction
 # -------------------------------
 if st.sidebar.button("🚀 Predict Demand"):
-    prediction = model.predict(input_df)[0]
-
-    # Demand Category
-    if prediction < 100:
-        demand_level = "Low"
-    elif prediction < 300:
-        demand_level = "Medium"
-    else:
-        demand_level = "High"
+    try:
+        prediction = model.predict(input_df)[0]
+        st.success(f"🚴 Predicted Bike Rentals: {int(prediction)}")
+    except Exception as e:
+        st.error("Prediction failed due to input mismatch")
+        st.exception(e)
 
     # -------------------------------
     # KPI Cards
