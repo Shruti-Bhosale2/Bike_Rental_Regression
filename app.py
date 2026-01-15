@@ -96,7 +96,7 @@ if st.sidebar.button("🚀 Predict Demand"):
     if hasattr(model, "feature_names_in_"):
         input_df_numeric = input_df_numeric[model.feature_names_in_]
 
-    try:+
+    try:
         prediction = float(model.predict(input_df_numeric)[0])
 
         # Demand category
