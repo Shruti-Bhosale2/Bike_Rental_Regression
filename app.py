@@ -77,23 +77,8 @@ input_df_numeric = None
 # Predict Button
 # -------------------------------
 if st.sidebar.button("🚀 Predict Demand"):
-
-    try:
-        # IMPORTANT: pass raw DataFrame to pipeline
-        prediction = float(model.predict(input_df)[0])
-
-        if prediction < 100:
-            demand_level = "Low"
-        elif prediction < 300:
-            demand_level = "Medium"
-        else:
-            demand_level = "High"
-
-        st.success("✅ Prediction Successful")
-
-    except Exception as e:
-        st.error("❌ Prediction Failed")
-        st.exception(e)
+    prediction = model.predict(input_df)[0]
+    st.success(f"🚴 Predicted Bike Rentals: {int(prediction)}")
 
 # -------------------------------
 # Display Results
