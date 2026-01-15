@@ -63,6 +63,8 @@ input_df = pd.DataFrame([{
     "hum": hum,
     "windspeed": windspeed
 }])
+st.write("Input data types:")
+st.write(input_df.dtypes)
 
 # -------------------------------
 # Initialize variables
@@ -76,16 +78,9 @@ input_df_numeric = None
 # -------------------------------
 if st.sidebar.button("🚀 Predict Demand"):
 
-    input_df_numeric = input_df.apply(
-        pd.to_numeric, errors="coerce"
-    ).fillna(0)
-
-    # Ensure correct feature order
-    if hasattr(model, "feature_names_in_"):
-        input_df_numeric = input_df_numeric[model.feature_names_in_]
-
     try:
-        prediction = float(model.predict(input_df_numeric)[0])
+        # IMPORTANT: pass raw DataFrame to pipeline
+        prediction = float(model.predict(input_df)[0])
 
         if prediction < 100:
             demand_level = "Low"
@@ -127,7 +122,7 @@ if prediction is not None:
         temp_df = input_df.copy()
         temp_df["hr"] = h
 
-        temp_df = temp_df.apply(pd.to_numeric, errors="coerce").fillna(0)
+        prediction = model.predict(temp_df)[0]
         if hasattr(model, "feature_names_in_"):
             temp_df = temp_df[model.feature_names_in_]
 
