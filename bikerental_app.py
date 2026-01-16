@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd
+import numpy as np
 import pickle
 
 st.set_page_config(page_title="Bike Rental Prediction")
@@ -36,24 +36,13 @@ windspeed = st.slider("Windspeed (Normalized)", 0.0, 1.0, 0.3)
 # ===============================
 if st.button("Predict Bike Rentals"):
 
-    input_data = pd.DataFrame([[
-        int(season),
-        int(yr),
-        int(mnth),
-        int(holiday),
-        int(weekday),
-        int(workingday),
-        int(weathersit),
-        float(temp),
-        float(atemp),
-        float(hum),
-        float(windspeed)
-    ]], columns=[
-        "season", "yr", "mnth", "holiday", "weekday",
-        "workingday", "weathersit",
-        "temp", "atemp", "hum", "windspeed"
-    ])
+    # 🔑 CRITICAL FIX: NumPy float array
+    input_array = np.array([[
+        season, yr, mnth, holiday, weekday,
+        workingday, weathersit,
+        temp, atemp, hum, windspeed
+    ]], dtype=np.float64)
 
-    prediction = model.predict(input_data)
+    prediction = model.predict(input_array)
 
     st.success(f"🚴 Estimated Bike Rentals: **{int(prediction[0])}**")
